@@ -3,13 +3,35 @@ import { PrismaClient } from '@prisma/client';
 
 const router = Router();
 const prisma = new PrismaClient();
+// get all products
+router.get('/',async (req, res) => {
+ try{
 
-router.get('/', (req, res) => {
-  res.send("getting all products...");
+const products=await prisma.products.findMany();
+res.status(201).json(products);
+ }catch(error){
+    res.status(500).json({success:false,message:error.message})
+ }
 });
-
-router.get("/:id", (req, res) => {
-  res.send("getting a single product...");
+// get single product
+router.get("/:id", async(req, res) => {
+    const id=req.params.id;
+try{
+   const products=await prisma.products.findFirst({
+    where:{product_id :id},
+        select:{
+            product_id:true,
+            product_title:true,
+            product_description:true,
+            product_Cost:true,
+            onOffer:true
+        }
+    
+   })
+   res.status(200).json(products) 
+}catch(error){
+    res.status(500).json({success:false,message:error.message});
+}
 });
 
 // post
@@ -37,11 +59,11 @@ router.post("/", async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
-
+// patch
 router.patch("/:id", (req, res) => {
   res.send("updating a single product...");
 });
-
+// delete
 router.delete("/:id", (req, res) => {
   res.send("deleting a single product...");
 });
