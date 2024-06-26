@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "start:watch":"nodemon ./src/index.js",
-    "dev": "nodemon index.js"
+    "start:watch": "nodemon ./src/index.js"
   },
   "keywords": [],
   "author": "",
