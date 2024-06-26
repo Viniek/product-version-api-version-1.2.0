@@ -64,8 +64,51 @@ router.post("/", async (req, res) => {
   }
 });
 // patch
-router.patch("/:id", (req, res) => {
-  res.send("updating a single product...");
+router.patch("/:id", async(req, res) => {
+    const { product_id, product_title, product_description, product_Cost, onOffer } = req.body;
+    const id=req.params.id;
+    try{
+        let updatedUser;
+            if(product_id){
+                updatedUser=await prisma.products.update({
+                    where:{product_id:id},
+                    data: {product_id:product_id}
+                })
+            }
+
+
+            if(product_title){
+                updatedUser=await prisma.products.update({
+                    where:{product_id:id},
+                    data: {product_title:product_title}
+                })
+            }
+
+            if( product_description){
+                updatedUser=await prisma.products.update({
+                    where:{product_id:id},
+                    data: { product_description: product_description}
+                })
+            }
+
+            if(  product_Cost){
+                updatedUser=await prisma.products.update({
+                    where:{product_id:id},
+                    data: {  product_Cost:  product_Cost}
+                })
+            }
+
+            if( onOffer){
+                updatedUser=await prisma.products.update({
+                    where:{product_id:id},
+                    data: { onOffer: onOffer}
+                })
+            }
+        res.status(200).json({success:true,message:'hurray!!updated successfully'})
+
+    }catch(error){
+        res.status(500).json({success:false,message:error.message})
+    }
 });
 // delete
 router.delete("/:id", async(req, res) => {
