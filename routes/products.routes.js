@@ -24,6 +24,13 @@ router.post("/", async (req, res) => {
         product_Cost: product_Cost,
         onOffer: onOffer, // Ensure this is processed as a boolean
       },
+      select:{
+        product_id: true,
+        product_title: true,
+        product_description:true,
+        product_Cost:true,
+        onOffer: true,
+      }
     });
     res.status(201).json(newProduct);
   } catch (error) {
