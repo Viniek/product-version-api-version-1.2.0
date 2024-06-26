@@ -28,7 +28,11 @@ try{
         }
     
    })
+   if(!products){
+    res.status(500).json({success:false,message:"OOPS!!Product not found"})
+   }else{
    res.status(200).json(products) 
+   }
 }catch(error){
     res.status(500).json({success:false,message:error.message});
 }
@@ -64,8 +68,26 @@ router.patch("/:id", (req, res) => {
   res.send("updating a single product...");
 });
 // delete
-router.delete("/:id", (req, res) => {
-  res.send("deleting a single product...");
+router.delete("/:id", async(req, res) => {
+  const id=req.params.id;
+  try{
+    const deleteProduct=await prisma.products.delete(
+    {
+        where:{product_id:id}
+    }
+        // where:{product_id: id}
+        // select:{
+        //     product_id: true,
+        //     product_title:true,
+        //     product_description:true,
+        //     product_Cost:true,
+        //     onOffer: true,
+        //   }
+    );
+res.status(201).json({success:true,message:"hurray!!product deleted"})
+  }catch(error){
+    res.status(500).json({success:false,message:error.message})
+  }
 });
 
 export default router;
